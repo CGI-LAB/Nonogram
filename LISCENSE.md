@@ -1,4 +1,5 @@
-Copyright (c) GitHub Inc.
+Copyright (c) Computer Game Intelligence Lab, National Chiao-Tung University.
+http://aigames.nctu.edu.tw
 
 Permission is hereby granted, free of charge, to any person obtaining a copy of this program and associated documentation files, to deal in the program without restriction, including without limitation the rights to use, copy, modify, merge, distribute, and sublicense, and to permit persons to whom the program is furnished to do so, subject to the following conditions:
 
