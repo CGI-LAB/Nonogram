@@ -26,7 +26,7 @@
 #define MODE 1 // 0 schdule 
 #define INPUT_FILE "input.txt"
 #define OUTPUT_FILE "solution.txt"
-#define LOF_FILE "log.txt"   
+#define LOG_FILE "log.txt"   
 #define LIGHT_NODE_LIMITED 15000
 #define HEAVT_NODE_LIMITED 60000
 

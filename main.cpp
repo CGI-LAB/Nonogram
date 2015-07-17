@@ -16,7 +16,7 @@
 
 char inputname[] = INPUT_FILE ;
 char outputname[] = OUTPUT_FILE ;
-char logname[] = LOF_FILE ;
+char logname[] = LOG_FILE ;
 #if MODE == 0 
 BOOL WINAPI console_ctrl_handler(DWORD dwCtrlType)
 {
