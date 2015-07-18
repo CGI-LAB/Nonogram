@@ -1,5 +1,5 @@
-# Nonogram
-LalaFrogKK is a Nonogram solver developed by the team in the <a href=http://www.aigames.nctu.edu.tw/>CGI-Lab</a>  led by <a href=http://java.csie.nctu.edu.tw/~icwu/>Prof. I-Chen Wu</a>. The authors include Kan-Yueh Chen, Ching-Hua Kuo, Hao-Hua Kang, Der-Johng Sun, and I-Chen Wu. This version had won all the champions of all Computer Olympiad/TAAI/TCGA Nonogram tournaments <a href=http://java.csie.nctu.edu.tw/~icwu/honors.html>since TAAI 2011</a>. 
+# LalaFrogKK
+LalaFrogKK is a Nonogram solver developed by the team in the <a href=http://www.aigames.nctu.edu.tw/>CGI-Lab</a>  led by <a href=http://java.csie.nctu.edu.tw/~icwu/>Prof. I-Chen Wu</a>. The authors include Kan-Yueh Chen, Ching-Hua Kuo, Hao-Hua Kang, Der-Johng Sun, and I-Chen Wu. This version had won all the champions of all Computer Olympiad/TAAI/TCGA Nonogram tournaments <a href=http://java.csie.nctu.edu.tw/~icwu/honors.html>since TAAI 2011 and till Computer Olympiad 2015</a> (around when this version is published). 
 
 This program was written based on the algorithm described in the following paper:
 
@@ -15,7 +15,7 @@ The following explains some settings in "config.h":
 
 Any comments are welcome and sent to nonogram@aigames.nctu.edu.tw. 
 
-CGI Lab
-Department of Computer Science
-National Chiao Tung University
+CGI Lab<br>
+Department of Computer Science<br>
+National Chiao Tung University<br>
 Hsinchu, Taiwan
