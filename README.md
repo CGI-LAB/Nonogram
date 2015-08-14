@@ -8,17 +8,17 @@ LalaFrogKK is a Nonogram solver developed by the team in the <a href=http://www.
 The following explains some settings in "config.h":
 - P_SIZE is the width as well as the height of puzzles, 25 in the tournaments. 
 - NUM_OF_QUESTIONS is the total number of puzzles to be solved, 1000 in the tournaments. 
-- MODE is set according to different solving strategies. 
-  1: Solve from the first puzzle to the last one with only finding one solution. (the mode of current tournaments)
-  2: Solve from the first puzzle to the last one. For the puzzles with unique solution, only need to find the solution. For the puzzles with multiple solutions, only need to find two of them. <strong>(the one used in the above paper and TAAI 2011)</strong>
+- MODE is set according to different solving strategies. <br>
+  1: Solve from the first puzzle to the last one with only finding one solution. (the mode of current tournaments) <br>
+  2: Solve from the first puzzle to the last one. For the puzzles with unique solution, only need to find the solution. For the puzzles with multiple solutions, only need to find two of them. <strong>(the one used in the above paper and TAAI 2011)</strong> <br>
   3: Solve from the first puzzle to the last one with finding all solutions. 
 - INPUT_FILE is the name of input file, where all the puzzles to be solved are stored in. 
 - OUTPUT_FILE is the name of output file, where all the solutions of the puzzles are written to. 
 - LOG_FILE is the name of log file, where the time spent to solve each puzzle are recorded. 
-- DOING_INVERSE_LINKS and DOING_INVERSE_LINKS_BY_COPY_ONE are the switches for Fully Probing. 
-  FP1: Comment both flags. 
-  FP2: Comment DOING_INVERSE_LINKS_BY_COPY_ONE. 
-  FP3: Leave both flags uncommented. 
+- DOING_INVERSE_LINKS and DOING_INVERSE_LINKS_BY_COPY_ONE are the switches for Fully Probing. <br>
+  FP1: Comment both flags. <br>
+  FP2: Comment DOING_INVERSE_LINKS_BY_COPY_ONE. <br>
+  FP3: Leave both flags uncommented. <br>
 - Line 58~67 are for different types of move ordering. 
 
 Since no one in our lab maintains the code anymore, we may not be able to answer your questions. However, any comments are welcome and sent to nonogram@aigames.nctu.edu.tw. 
