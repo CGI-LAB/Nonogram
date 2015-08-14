@@ -13,7 +13,9 @@ The following explains some settings in "config.h":
 - OUTPUT_FILE is the name of output file, where all the solutions of the puzzles are written to. 
 - LOG_FILE is the name of log file, where the time spent to solve each puzzle are recorded. 
 
-Any comments are welcome and sent to nonogram@aigames.nctu.edu.tw. 
+Bugs may exist in the code. For example, the puzzle in PuzzleCannotSolve.txt cannot be solved by this version of LalaFrogKK. 
+
+Since no one in our lab maintains the code anymore, we may not be able to answer your questions. However, any comments are welcome and sent to nonogram@aigames.nctu.edu.tw. 
 
 CGI Lab<br>
 Department of Computer Science<br>
