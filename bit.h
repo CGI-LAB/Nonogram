@@ -2,7 +2,7 @@
 #define _BIT_H_
 
 #include "config.h"
-
+#include "lineMask.h"
 
 typedef unsigned long long int LineMask;
 
@@ -19,6 +19,10 @@ inline unsigned int count64(LineMask block){
 	block -= ((block >> 1)& 0x5555555555555555ULL );
 	block = ( ( block >> 2 )  & 0x3333333333333333ULL ) + (block & 0x3333333333333333ULL );
 	return (( block + (block>>4)& 0x0F0F0F0F0F0F0F0FULL )* 0x0101010101010101ULL ) >> 56;
+}
+
+inline unsigned int count128(LineMask_128 block){
+	return count64( block.mBit.n[0] ) + count64( block.mBit.n[1] );
 }
 
 #define COUNT64(x) ( count64(x & MASK50) )

@@ -1,5 +1,5 @@
 #include "SearchSolver.h"
-#include "lineSolver.h"
+#include "LineSolver.h"
 #include <cstdio>
 #include <iostream>
 #include <string>
@@ -36,9 +36,11 @@ inline int resumableDfs(const char* fileName,
     switch(stack.step[ stack.depth])
     {
     case 0:
-        stack.state = twoSatSolver( problem, 
-            stack.solution, 
-            stack.whereCanIgo[stack.depth] ) ;
+        stack.state = beginFullyProbing( problem, 
+            stack.solution,  
+            stack.whereCanIgo[stack.depth], 0, 1,
+			stack.solution2
+			) ;
         stack.nodeLimit--;    
         stack.nodeCount++;    
         if( SOLVED == stack.state)
@@ -141,7 +143,7 @@ void scheduledSolver(const Puzzle problems[NUM_OF_QUESTIONS], int nodeLimit )
         }
 
         if ( nodeLimit == 0 )
-          allQuestions[i].score = stack.solution.numOfSquareOnBoard ;
+          allQuestions[i].score = stack.solution.numOfPaintedSquares ;
 
         fprintf( fp_log, "#%d\t%f\t%d\n",questionId + 1, (double)(clock() - starttime)/CLOCKS_PER_SEC, result) ;
       }//end if

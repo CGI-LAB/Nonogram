@@ -1,11 +1,11 @@
 #include "SearchSolver.h"
-#include "lineSolver.h"
+#include "LineSolver.h"
 #include <queue>
 
 static Board ifGuessBlackBoard[P_SIZE][P_SIZE] ;
 static Board ifGuessWhiteBoard[P_SIZE][P_SIZE] ;
 
-inline int solveOneTwoSat( const Puzzle& problem,
+inline int beginOneProbe( const Puzzle& problem,
                            Board& correctBoard, 
                            Board& oneSolution, 
                            bool& isFindSolution, 
@@ -46,17 +46,28 @@ inline int solveOneTwoSat( const Puzzle& problem,
       bool isUpdate = false ;
       for ( int i = 0 ; i < P_SIZE ; i++ )
       {
-	    	LineMask oneRow = ifGuessBlackBoard.rowString[i] | ifGuessWhiteBoard.rowString[i] ;
+#ifdef SSE_BOARD
+	    	LineMask_128 oneRow = ifGuessBlackBoard.rowString[i] | ifGuessWhiteBoard.rowString[i] ;
+#else
+        LineMask oneRow = ifGuessBlackBoard.rowString[i] | ifGuessWhiteBoard.rowString[i] ;
+#endif
 		    if ( oneRow != correctBoard.rowString[i] )
 		    {
           isUpdate = true ;
-          correctBoard.numOfSquareOnBoard += count64( ( correctBoard.rowString[i] ^ oneRow ) ) ;
+#ifdef SSE_BOARD
+          correctBoard.numOfPaintedSquares += count128( ( correctBoard.rowString[i] ^ oneRow ) ) ;
+#else
+          correctBoard.numOfPaintedSquares += count64( ( correctBoard.rowString[i] ^ oneRow ) ) ;
+#endif
           correctBoard.rowString[i] = correctBoard.rowString[i] & oneRow ;
 		      NodeQueue::myQ.pushQ(i + P_SIZE) ;
 		    }
-
-		    LineMask oneCol = ifGuessBlackBoard.colString[i] | ifGuessWhiteBoard.colString[i] ;
- 		    if ( oneCol != correctBoard.colString[i] )
+#ifdef SSE_BOARD
+		    LineMask_128 oneCol = ifGuessBlackBoard.colString[i] | ifGuessWhiteBoard.colString[i] ;
+#else
+        LineMask oneCol = ifGuessBlackBoard.colString[i] | ifGuessWhiteBoard.colString[i] ;
+#endif
+        if ( oneCol != correctBoard.colString[i] )
 		    {
           isUpdate = true ;
 		      correctBoard.colString[i] = correctBoard.colString[i] & oneCol;
@@ -102,7 +113,7 @@ inline int solveOneTwoSat( const Puzzle& problem,
       } // end if
       else
       {
-        if ( memcmp( oneSolution.rowString, resumeBoard.rowString,  P_SIZE * 8  ) != 0 )
+        if ( memcmp( oneSolution.rowString, resumeBoard.rowString,  sizeof(resumeBoard.rowString)  ) != 0 )
         {
           correctBoard = resumeBoard ;
           return MANY_SOLUTION ;
@@ -116,7 +127,7 @@ inline int solveOneTwoSat( const Puzzle& problem,
   return UNSOLVED ;
 }
 
-inline int twoSatSolver( const Puzzle& problem, 
+inline int beginFullyProbing( const Puzzle& problem, 
                          Board& correctBoard,
                          Board& oneSolution, 
                          bool& isFindSolution, 
@@ -124,8 +135,9 @@ inline int twoSatSolver( const Puzzle& problem,
                        )
 {
   Board resumeBoard ;
+  Board origBoard = correctBoard;
 
-  if ( correctBoard.numOfSquareOnBoard == S_SIZE )
+  if ( correctBoard.numOfPaintedSquares == S_SIZE )
   {
     if ( !isFindSolution)
     {
@@ -135,7 +147,7 @@ inline int twoSatSolver( const Puzzle& problem,
     } // end if
     else
     {
-      if ( memcmp( oneSolution.rowString, correctBoard.rowString,  P_SIZE * 8  ) != 0 )
+      if ( memcmp( oneSolution.rowString, correctBoard.rowString,  sizeof(correctBoard.rowString) ) != 0 )
         return MANY_SOLUTION ;
       else
         return SOLVED ;
@@ -151,7 +163,7 @@ inline int twoSatSolver( const Puzzle& problem,
       {
         if ( getSquare( i, j, correctBoard ) == SQUARE_UNKNOWN ) 
         {
-          int state = solveOneTwoSat( problem,
+          int state = beginOneProbe( problem,
                                       correctBoard, 
                                       oneSolution,
                                       isFindSolution,
@@ -170,7 +182,7 @@ inline int twoSatSolver( const Puzzle& problem,
             } // end if
             else
             {
-              if ( memcmp( oneSolution.rowString, correctBoard.rowString,  P_SIZE * 8  ) != 0 )
+              if ( memcmp( oneSolution.rowString, correctBoard.rowString,  sizeof(correctBoard.rowString)  ) != 0 )
                 return MANY_SOLUTION ;
               else
                 return SOLVED ;
@@ -186,40 +198,20 @@ inline int twoSatSolver( const Puzzle& problem,
       } // for j ~ puzzle size
     } // for i ~ puzzle size
 
-    if ( memcmp( resumeBoard.rowString, correctBoard.rowString, P_SIZE * 8 ) == 0 ) 
+
+    if ( memcmp( resumeBoard.rowString, correctBoard.rowString, sizeof(correctBoard.rowString) ) == 0 ) 
     {
-      int x = 0 ;
-      int y = 0 ;
-      double maxScore = -1 ;
-      for ( int i = 0 ; i < P_SIZE ; i++ )
-      {
-        for ( int j = 0 ; j < P_SIZE ; j++ )
-        {
-          if ( getSquare( i, j, correctBoard ) == SQUARE_UNKNOWN ) 
-          {
-            double score = min( ifGuessBlackBoard[i][j].numOfSquareOnBoard, ifGuessWhiteBoard[i][j].numOfSquareOnBoard ) + 
-                           1.85 * log ( 1.0 + (double)abs( ifGuessBlackBoard[i][j].numOfSquareOnBoard - ifGuessWhiteBoard[i][j].numOfSquareOnBoard ) );
-
-            if ( score > maxScore )
-            {
-              x = i ;
-              y = j ;
-              maxScore = score ;
-            }
-          }
-        }
-      }
-
-      //if ( ifGuessWhiteBoard[x][y].numOfSquareOnBoard > ifGuessBlackBoard[x][y].numOfSquareOnBoard )
-      //{
-        whereCanIgo.firstGo = ifGuessWhiteBoard[x][y];
-        whereCanIgo.secondGo = ifGuessBlackBoard[x][y];
-      //}
-      //else
-     // {      
-      //  whereCanIgo.firstGo = ifGuessBlackBoard[x][y];
-      //  whereCanIgo.secondGo = ifGuessWhiteBoard[x][y];
-      //}
+      int x = -1 ;
+      int y = -1 ;
+      selectMove(problem, correctBoard, origBoard, x, y) ;
+	  if (x!=-1 && y!=-1)
+	  {
+		whereCanIgo.secondGo = ifGuessWhiteBoard[x][y];
+		whereCanIgo.firstGo = ifGuessBlackBoard[x][y];
+	  } else {
+		whereCanIgo.firstGo.numOfPaintedSquares = -1;
+		whereCanIgo.secondGo.numOfPaintedSquares = -1;
+	  }
       return UNSOLVED ;
     } // end if 2sat is stall
    
@@ -238,7 +230,7 @@ int VerifiedManySolution( bool& isFindSolution,
 {
   nodeCount++ ;
   SquareToGo whereCanIgo ;
-  int state = twoSatSolver( problem, solution, oneSolution, isFindSolution, whereCanIgo ) ;
+  int state = beginFullyProbing( problem, solution, oneSolution, isFindSolution, whereCanIgo ) ;
   if ( state == SOLVED )
     return SOLVED ;
   else if ( state == CONFLICT )
@@ -276,6 +268,8 @@ int VerifiedManySolution( bool& isFindSolution,
   else
     return SOLVED ;
 }
+
+extern int currentId ;
 int searchTwoSolutions( bool& isFindSolution, 
                         const Puzzle& problem,
                         Board& solution,
@@ -283,7 +277,8 @@ int searchTwoSolutions( bool& isFindSolution,
                         int& nodeCount 
                       ) 
 {
-  int state = lineSolver( problem, solution ) ;
+  currentId++ ;
+  int state = lineSolver( problem, oneSolution ) ;
   if ( state == SOLVED )
     return SOLVED ;        
   else if ( state == CONFLICT)
