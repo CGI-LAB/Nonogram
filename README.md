@@ -21,6 +21,37 @@ The following explains some settings in "config.h":
   FP3: Leave both flags uncommented. <br>
 - Line 58~67 are for different types of move ordering. 
 
+The following is the format of input and output file: 
+- There is a symbol "$" before the puzzle number. The description/solution of the puzzle starts from the next line. 
+- There are P_SIZE*2 lines of clues (puzzle description), the former P_SIZE are clues at the top end from up to down. The later P_SIZE are clues at the left end from left to right. 
+- The solutions are stored by P_SIZExP_SIZE matrices. A "0" means to leave a cell blank while a "1" means to color a cell black. 
+- All the numbers of clues and solutions are separated by TAB. 
+<br>For the following 4x4 puzzle<br>
+<pre>
+vvvv
+&nbsp;vv&nbsp;
+v&nbsp;vv
+vv&nbsp;&nbsp;
+</pre>
+The input is <br>
+<pre>
+1	2
+2	1
+3
+1	1
+4
+2
+1	2
+2
+</pre>
+The output is <br>
+<pre>
+1	1	1	1
+0	1	1	0
+1	0	1	1
+1	1	0	0
+</pre>
+
 Since no one in our lab maintains the code anymore, we may not be able to answer your questions. However, any comments are welcome and sent to nonogram@aigames.nctu.edu.tw. 
 
 CGI Lab<br>
